@@ -1,42 +1,58 @@
-const bcrypt = require('bcrypt');
-const { generateRandomString } = require('../../utilities/helper');
-const { Status } = require('../../config/constant.config');
-const UserModel = require('./user.model');
+const bcrypt = require("bcrypt");
+const { generateRandomString } = require("../../utilities/helper");
+const { Status } = require("../../config/constant.config");
+const UserModel = require("./user.model");
 
 class UserSvc {
-    async transformUserData (req) {
-        const data = req.body;
-        
-        if(!data) {
-            throw {
-                code : 422,
-                message: "Data not set",
-                name: "DATA_NOTSET"
-            }
-        }
+  async transformUserData(req) {
+    const data = req.body;
 
-        let salt = await bcrypt.genSalt(12);
-        data.password = bcrypt.hashSync(data.password, salt);
-
-        data.activationToken = generateRandomString();
-        data.expiryTime = new Date(Date.now() + 3* 3600 * 1000);
-        data.status = Status.PENDING;
-
-        return data;
+    if (!data) {
+      throw {
+        code: 422,
+        message: "Data not set",
+        name: "DATA_NOTSET",
+      };
     }
 
-    async createUser (userData) {
-        try {
-            const userObj = new UserModel(userData);
-            return await userObj.save();
+    let salt = await bcrypt.genSalt(12);
+    data.password = bcrypt.hashSync(data.password, salt);
 
-        } catch (error) {
-            throw error;
-        }
+    data.activationToken = generateRandomString();
+    data.expiryTime = new Date(Date.now() + 3 * 3600 * 1000);
+    data.status = Status.PENDING;
+
+    return data;
+  }
+
+  async createUser(userData) {
+    try {
+      const userObj = new UserModel(userData);
+      return await userObj.save();
+    } catch (error) {
+      throw error;
     }
-          
+  }
 
-     
+  async findSingleUser(filter) {
+    try {
+      let user = await UserModel.findOne(filter);
+
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  publicLoggedInUser(userDetail) {
+    return {
+      _id: userDetail._id,
+      email: userDetail.email,
+      name: userDetail.name,
+      status: userDetail.status,
+      role: userDetail.role,
+    }
+  }
 }
 
 const userSvc = new UserSvc();

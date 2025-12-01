@@ -1,3 +1,6 @@
+const crypto = require('crypto')
+
+
 const generateRandomString = (len = 100) => {
     let string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
     let randomString = "";
@@ -11,5 +14,9 @@ const generateRandomString = (len = 100) => {
     return randomString;
 
 }
+
+// let secret = crypto.randomBytes(32).toString('hex');
+
+
 
 module.exports = {generateRandomString}

@@ -1,1 +1,9 @@
 @import "tailwindcss";
+
+*{
+    font-family: Inter;
+}
+
+h3{
+    font-family: Manrope;
+}
