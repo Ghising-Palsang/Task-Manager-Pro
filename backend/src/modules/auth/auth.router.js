@@ -10,5 +10,8 @@ authRouter.use('/userRegister',bodyValidator(RegisterUserDTO), authCtrl.userRegi
 authRouter.use('/activateUser/:token', authCtrl.activateUser)
 authRouter.use('/logInUser', authCtrl.logInUser)
 authRouter.use('/getAllUsers', logInCheck, userCtrl.getAllUser)
+authRouter.use('/refreshToken', authCtrl.refreshAccessToken)
+authRouter.use('/logOutUser', authCtrl.logout)
+authRouter.use('/me', logInCheck, authCtrl.getLoggedInUser)
 
 module.exports = authRouter;

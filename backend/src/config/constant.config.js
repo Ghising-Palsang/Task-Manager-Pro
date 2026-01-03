@@ -1,7 +1,6 @@
 const UserRoles = {
     ADMIN: "admin",
-    CUSTOMER: "customer",
-    SELLER: "seller"
+    USER: "user"
 }
 
 const Status = {
@@ -10,4 +9,10 @@ const Status = {
     PENDING: "pending"
 }
 
-module.exports = {UserRoles, Status}
+const TaskStatus = {
+    ACTIVE: 'active',
+    COMPLETED: "completed",
+    
+}
+
+module.exports = {UserRoles, Status, TaskStatus}

@@ -16,7 +16,7 @@ const RegisterUserDTO = joi.object({
   email: joi.string().email().required(),
   password: joi.string().regex(passwordPattern).required(),
   confirmPassword: joi.ref("password"),
-  role: joi.string().regex(/^(customer|seller|admin)$/),
+  role: joi.string().regex(/^(user|admin)$/),
 });
 
 module.exports = { LoginUserDTO, RegisterUserDTO };

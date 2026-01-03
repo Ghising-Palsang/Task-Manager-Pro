@@ -1,9 +1,21 @@
+const cors = require('cors')
 const express = require("express");
 const router = require("./router.config");
+const cookieParser = require('cookie-parser');
 require("../config/mongodb.config");
 
 const app = express();
+
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true
+}))
+
+// parse JSON body
 app.use(express.json());
+
+// parse cookies
+app.use(cookieParser())
 
 app.use("/api/v1", router);
 

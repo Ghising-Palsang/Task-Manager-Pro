@@ -9,7 +9,7 @@ const logInCheck = async(req, res, next) => {
         let token = req.headers["authorization"] || null;
         if (!token){
             throw{
-                code:422,
+                code:401,
                 message: "Token Not found",
                 name: "TOKEN_NOTFOUND"
             }
@@ -23,7 +23,7 @@ const logInCheck = async(req, res, next) => {
 
         if(!sessionData){
             throw{
-                code: 422,
+                code: 401,
                 message: "Session Data Invalid",
                 name: "INVALID_SESSION_DATA"
             }
