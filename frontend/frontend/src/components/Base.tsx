@@ -22,12 +22,21 @@ const Base = () => {
   const navigate = useNavigate();
   const [input, setInput] = useState<string>("");
   const [tasks, setTasks] = useState<ITasks[]>([]);
+  const [editInput, setEditInput] = useState<string>("");
+  const [editingTaskId, setEditingTaskId] = useState<string>("")
+  const [newTitle, setNewTitle] = useState<string>("")
 
   const { logout, tokenReady } = useToken();
 
   const inputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
+
+  const editInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditInput(e.target.value);
+  };
+
+ 
 
   const getTasks = async () => {
     const response = await taskSvc.getTasks();
@@ -58,27 +67,60 @@ const Base = () => {
   };
 
   const handleCompletedTasks = async (id: string) => {
-    let newStatus = ""
+    let newStatus = "";
     setTasks((prev) =>
       prev.map((task) => {
         if (task._id === id) {
-          newStatus = task.status === "completed" ? "pending" : "completed"
+          newStatus = task.status === "completed" ? "pending" : "completed";
           // if(newStatus === "completed"){
           //   console.log("completed")
           // }else{
           //   console.log("active")
           // }
-          return {...task, status: newStatus}
+          return { ...task, status: newStatus };
         }
-        return task
+        return task;
       })
     );
     try {
       await taskSvc.patchTask(id, {
-        status: newStatus
-      })
+        status: newStatus,
+      });
     } catch (error) {
       console.error(`Failed to patch the status completed, ${error}`);
+    }
+  };
+
+  const onEditClick =  (taskId: string,title: string ) => {
+    setEditingTaskId(taskId)
+    console.log(editingTaskId)
+    setNewTitle(title)
+  };
+
+
+
+  const onEditCancel = () => {
+    setEditingTaskId("")
+
+  };
+
+  const onEditSubmit = async (taskId: string) => {
+    try {
+      setTasks((prev) =>
+        prev.map((task) => {
+          if (task._id === taskId) {
+            taskSvc.patchTask(task._id, {
+              title: newTitle,
+            });
+            return { ...task, title: newTitle };
+          }
+          return task;
+        })
+      );
+      setEditingTaskId('')
+      setNewTitle('')
+    } catch (error) {
+      console.error(`Failed to edit task, ${error}`);
     }
   };
 
@@ -138,7 +180,17 @@ const Base = () => {
         </div>
 
         <div>
-          <Taskbar tasks={tasks} deleteTask={handleDeleteTask} onCompleted = {handleCompletedTasks} />
+          <Taskbar
+            tasks={tasks}
+            deleteTask={handleDeleteTask}
+            onCompleted={handleCompletedTasks}
+            editingTaskId={editingTaskId}
+            onEditClick={onEditClick}
+            onEditCancel={onEditCancel}
+            editInputChange={editInputChange}
+            onEditSubmit={onEditSubmit}
+            editInput={editInput}
+          />
         </div>
       </div>
     </div>
