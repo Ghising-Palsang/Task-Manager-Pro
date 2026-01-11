@@ -26,7 +26,7 @@ const AddBar = ({ input, inputChange, addTask }: Readonly<InputProps>) => {
         />
         <button
           onClick={addTask}
-          className="bg-[#818089] text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl w-full sm:w-auto whitespace-nowrap"
+          className="bg-black text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl w-full sm:w-auto whitespace-nowrap hover:bg-green-200 hover:text-black"
         >
           Add Task
         </button>

@@ -54,6 +54,8 @@ loggedInUser = async() => {
     withCredentials: true
   })
 }
+
+
 }
 const authSvc = new AuthSvc();
 export default authSvc

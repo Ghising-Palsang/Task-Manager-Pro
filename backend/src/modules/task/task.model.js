@@ -13,7 +13,7 @@ const TaskSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: TaskStatus,
+      enum: Object.values(TaskStatus),
       default: TaskStatus.ACTIVE,
     },
     user: {

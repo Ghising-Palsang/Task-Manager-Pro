@@ -7,6 +7,7 @@ class TaskCtrl {
      addTask = async(req, res ,next) => {
         try {
             const data = req.body;
+            
             const userData = req.loggedInUser;
             if(!userData){
                 throw{
@@ -164,6 +165,8 @@ class TaskCtrl {
             next(error)
         }
     }
+
+  
     
 }
 

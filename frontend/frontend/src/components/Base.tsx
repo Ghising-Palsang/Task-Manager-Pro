@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import AddBar from "./AddBar";
 import MeasureBox from "./MeasureBox";
 import Taskbar from "./Taskbar";
@@ -23,8 +23,11 @@ const Base = () => {
   const [input, setInput] = useState<string>("");
   const [tasks, setTasks] = useState<ITasks[]>([]);
   const [editInput, setEditInput] = useState<string>("");
-  const [editingTaskId, setEditingTaskId] = useState<string>("")
-  const [newTitle, setNewTitle] = useState<string>("")
+  const [editingTaskId, setEditingTaskId] = useState<string>("");
+ 
+
+  const [filter , setFilter] = useState<string>("all");
+
 
   const { logout, tokenReady } = useToken();
 
@@ -36,13 +39,24 @@ const Base = () => {
     setEditInput(e.target.value);
   };
 
- 
-
   const getTasks = async () => {
     const response = await taskSvc.getTasks();
     console.log(response);
     return response;
   };
+  
+  
+
+  const filteredTasks = useMemo(()=> {
+    if(filter === "active"){
+      return tasks.filter(t => t.status === "active")
+    }else if (filter === "completed"){
+      return tasks.filter(t => t.status === "completed")
+    }
+    return tasks
+  }, [tasks, filter])
+
+
 
   const addTask = async () => {
     if (input.trim() === "") return;
@@ -67,20 +81,11 @@ const Base = () => {
   };
 
   const handleCompletedTasks = async (id: string) => {
-    let newStatus = "";
+    const taskToUpdate = tasks.find((t)=> t._id === id)
+    if(!taskToUpdate) return;
+    const newStatus= taskToUpdate.status === "completed" ? "active" : "completed"
     setTasks((prev) =>
-      prev.map((task) => {
-        if (task._id === id) {
-          newStatus = task.status === "completed" ? "pending" : "completed";
-          // if(newStatus === "completed"){
-          //   console.log("completed")
-          // }else{
-          //   console.log("active")
-          // }
-          return { ...task, status: newStatus };
-        }
-        return task;
-      })
+      prev.map((task) => task._id === id ? {...task, status: newStatus} : task)
     );
     try {
       await taskSvc.patchTask(id, {
@@ -91,34 +96,23 @@ const Base = () => {
     }
   };
 
-  const onEditClick =  (taskId: string,title: string ) => {
-    setEditingTaskId(taskId)
-    console.log(editingTaskId)
-    setNewTitle(title)
+  const onEditClick = (taskId: string, title: string) => {
+    setEditingTaskId(taskId);
+    console.log(editingTaskId);
+    setEditInput(title ?? "")
   };
 
-
-
   const onEditCancel = () => {
-    setEditingTaskId("")
-
+    setEditingTaskId("");
   };
 
   const onEditSubmit = async (taskId: string) => {
+    if(!editInput.trim()) return;
     try {
-      setTasks((prev) =>
-        prev.map((task) => {
-          if (task._id === taskId) {
-            taskSvc.patchTask(task._id, {
-              title: newTitle,
-            });
-            return { ...task, title: newTitle };
-          }
-          return task;
-        })
-      );
-      setEditingTaskId('')
-      setNewTitle('')
+      await taskSvc.patchTask(taskId, {title: editInput})
+      setTasks((prev)=> prev.map((task) => task._id === taskId ? {...task, title: editInput} : task))
+      setEditingTaskId("");
+      setEditInput("");
     } catch (error) {
       console.error(`Failed to edit task, ${error}`);
     }
@@ -138,14 +132,17 @@ const Base = () => {
     const fetchTasks = async () => {
       try {
         const res = await getTasks();
-        console.log(res, "res from getTasks");
+       
         setTasks(res.data.data);
+       
       } catch (error) {
         console.error(`Failed to fetch Tasks, ${error}`);
       }
     };
     fetchTasks();
   }, [tokenReady]);
+
+ 
 
   return (
     <div className="min-h-screen bg-white p-3 sm:p-4 md:p-6 lg:p-8">
@@ -172,7 +169,7 @@ const Base = () => {
         </div>
 
         <div>
-          <MeasureBox />
+          <MeasureBox tasks={tasks} />
         </div>
 
         <div>
@@ -190,6 +187,8 @@ const Base = () => {
             editInputChange={editInputChange}
             onEditSubmit={onEditSubmit}
             editInput={editInput}
+            setFilter = {setFilter}
+            filteredTasks={filteredTasks}
           />
         </div>
       </div>

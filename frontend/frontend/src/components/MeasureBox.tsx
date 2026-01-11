@@ -1,12 +1,27 @@
 import { FaRegCircle, FaTasks } from "react-icons/fa";
 import { FaRegCircleCheck, FaRegCircleDot } from "react-icons/fa6";
+import type { ITasks } from "./Base";
 
-const MeasureBox = () => {
+export interface IMeasureBox {
+  tasks: ITasks[]
+}
+
+const MeasureBox =  ({tasks}: IMeasureBox) => {
+
+  const totalCounts = tasks.length
+  const completedCounts = tasks.filter(t=> t.status === "completed").length
+  const activeCounts = tasks.filter(t=> t.status === "active").length
+  
+  const progress = totalCounts ? Math.round(completedCounts/totalCounts * 100) : 0
   const cards = [
-    { label: "Total Tasks", count: "1", icon: FaTasks },
-    { label: "Active", count: "1", icon: FaRegCircle },
-    { label: "Completed", count: "1", icon: FaRegCircleCheck },
-    { label: "Progress", count: "1", icon: FaRegCircleDot },
+    { label: "Total Tasks", count: totalCounts, icon: FaTasks },
+    { label: "Active", count: activeCounts, icon: FaRegCircle },
+    {
+      label: "Completed",
+      count: completedCounts,
+      icon: FaRegCircleCheck,
+    },
+    { label: "Progress", count: progress, icon: FaRegCircleDot },
   ];
 
   return (
