@@ -6,10 +6,12 @@ require("../config/mongodb.config");
 
 const app = express();
 
-app.use(cors({
-  origin: "http://localhost:5173",
-  credentials: true
-}))
+app.use(
+  cors({
+    origin: "https://task-manager-palsang-black.vercel.app/",
+    credentials: true,
+  })
+);
 
 // parse JSON body
 app.use(express.json());
