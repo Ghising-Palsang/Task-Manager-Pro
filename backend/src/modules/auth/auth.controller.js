@@ -110,11 +110,11 @@ class AuthCtrl {
      
       
     
-      const isProd = process.env.NODE_ENV === "production";
+      
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
-        secure: isProd,
-        sameSite: isProd ? "none" : "lax",
+        secure: true,
+        sameSite: "none",
         path: "/",
         maxAge: 7 * 24 * 60 * 60 * 1000,
       });
@@ -135,6 +135,7 @@ class AuthCtrl {
   async logout(req, res, next) {
     try {
       const refreshToken = req.cookies.refreshToken;
+      console.log(refreshToken)
       console.log(refreshToken, "refresh token");
       if (!refreshToken) {
         throw {
