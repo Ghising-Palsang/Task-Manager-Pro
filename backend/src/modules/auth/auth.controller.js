@@ -146,14 +146,6 @@ class AuthCtrl {
       await AuthModel.findOneAndDelete({
         refreshToken: refreshToken,
       });
-
-      res.clearCookie("refreshToken", {
-        httpOnly: true,
-        secure: isProd,
-        sameSite: isProd ? "none" : "lax",
-        path: "/",
-      });
-
       res.json({
         message: "User logged out",
         status: "ok",
