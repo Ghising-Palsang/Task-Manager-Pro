@@ -17,6 +17,15 @@ class EmailService {
         logger:true,
         debug:true
       });
+
+      // verifying connection
+      this.#transport.verify((err, success) => {
+        if (err) {
+          console.error("SMTP Server Connection Failed:", err);
+        } else {
+          console.log("SMTP Server Ready:", success);
+        }
+      });
     } catch (error) {
       throw {
         message: "Error Connecting to SMTP Server",
