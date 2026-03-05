@@ -107,6 +107,9 @@ class AuthCtrl {
       let response = await authSvc.storeSessionData(sessionData);
       console.log(response);
 
+     
+      
+    
       const isProd = process.env.NODE_ENV === "production";
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
