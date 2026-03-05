@@ -9,10 +9,13 @@ class EmailService {
         service: SmtpConfig.provider,
         host: SmtpConfig.host,
         port: SmtpConfig.port,
+        secure:false,
         auth: {
           user: SmtpConfig.user,
           pass: SmtpConfig.password,
         },
+        logger:true,
+        debug:true
       });
     } catch (error) {
       throw {
