@@ -12,7 +12,7 @@ class AuthCtrl {
   async userRegister(req, res, next) {
     const userData = await userSvc.transformUserData(req);
     const user = await userSvc.createUser(userData);
-    await authMailSvc.notifyAccountActivation(user);
+    // await authMailSvc.notifyAccountActivation(user);
     res.json({
       data: user,
       message: "User has been registerd",
