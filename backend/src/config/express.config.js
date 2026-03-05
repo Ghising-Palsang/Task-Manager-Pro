@@ -14,17 +14,16 @@ const corsOptions = {
       origin.endsWith(".vercel.app") ||
       origin === "http://localhost:5173"
     ) {
-      callback(null, true); // Cors allowed
+      callback(null, origin || "http://localhost:5173"); // Cors allowed
     } else {
-      callback(null, false); 
+      callback(null, false);
     }
   },
-  credentials: true, 
+  credentials: true,
 };
 
-app.use(cors(corsOptions));
-
 app.options("*", cors(corsOptions));
+app.use(cors(corsOptions));
 
 // parse JSON body
 app.use(express.json());
