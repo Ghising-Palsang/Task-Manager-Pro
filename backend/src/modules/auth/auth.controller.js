@@ -146,6 +146,13 @@ class AuthCtrl {
         refreshToken: refreshToken,
       });
 
+      res.clearCookie("refreshToken", {
+        httpOnly: true,
+        secure: isProd,
+        sameSite: isProd ? "none" : "lax",
+        path: "/",
+      });
+
       res.json({
         message: "User logged out",
         status: "ok",
@@ -225,7 +232,7 @@ class AuthCtrl {
       token = token.replace("Bearer", "").trim();
       const payload = jwt.verify(token, AppConfig.jwtSecret);
 
-      const user = await UserModel.findOneAndDelete({
+      const user = await UserModel.findById({
         _id: payload.sub,
       });
 
