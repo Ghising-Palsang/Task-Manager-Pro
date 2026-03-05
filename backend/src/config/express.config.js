@@ -16,13 +16,15 @@ const corsOptions = {
     ) {
       callback(null, true); // Cors allowed
     } else {
-      callback(new Error("CORS not allowed")); 
+      callback(null, false); 
     }
   },
   credentials: true, 
 };
 
 app.use(cors(corsOptions));
+
+app.options("*", cors(corsOptions));
 
 // parse JSON body
 app.use(express.json());
