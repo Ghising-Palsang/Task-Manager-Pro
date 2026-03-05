@@ -113,8 +113,8 @@ class AuthCtrl {
 
  res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
-        secure: false, 
-        sameSite: "Lax",
+        secure: true, 
+        sameSite: "none",
         path: "/",
         maxAge: 7 * 24 * 60 * 60 * 1000
       })
