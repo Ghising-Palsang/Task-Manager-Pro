@@ -6,8 +6,7 @@ const authMailSvc = require("./auth.mail");
 const jwt = require("jsonwebtoken");
 const authSvc = require("./auth.service");
 const AuthModel = require("./auth.model");
-const bcrypt = require('bcrypt')
-
+const bcrypt = require("bcrypt");
 
 class AuthCtrl {
   async userRegister(req, res, next) {
@@ -34,10 +33,9 @@ class AuthCtrl {
           _id: user._id,
         },
         { $set: { activationToken: null, status: Status.ACTIVE } },
-        { new: true }
+        { new: true },
       );
 
-      
       res.json({
         data: user,
         message: "User Activated",
@@ -70,8 +68,7 @@ class AuthCtrl {
           code: 401,
           message: "Incorrect Email",
           status: "Incorrect Email",
-   
-     };
+        };
       }
 
       let correctPass = bcrypt.compareSync(password, user.password);
@@ -94,12 +91,12 @@ class AuthCtrl {
       let accessToken = jwt.sign(
         { sub: user._id, typ: "Bearer" },
         AppConfig.jwtSecret,
-        { expiresIn: "15m" }
+        { expiresIn: "15m" },
       );
       let refreshToken = jwt.sign(
         { sub: user._id, typ: "Bearer" },
         AppConfig.jwtSecret,
-        { expiresIn: "7d" }
+        { expiresIn: "7d" },
       );
 
       let sessionData = {
@@ -109,18 +106,15 @@ class AuthCtrl {
 
       let response = await authSvc.storeSessionData(sessionData);
       console.log(response);
-      
 
- res.cookie("refreshToken", refreshToken, {
+      const isProd = process.env.NODE_ENV === "production";
+      res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
-        secure: true, 
+        secure: isProd ? "none" : "lax",
         sameSite: "none",
         path: "/",
-        maxAge: 7 * 24 * 60 * 60 * 1000
-      })
-
-      
-      
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      });
 
       res.json({
         data: {
@@ -137,17 +131,16 @@ class AuthCtrl {
 
   async logout(req, res, next) {
     try {
-
       const refreshToken = req.cookies.refreshToken;
-      console.log(refreshToken, "refresh token")
-      if(!refreshToken){
-        throw{
+      console.log(refreshToken, "refresh token");
+      if (!refreshToken) {
+        throw {
           code: 401,
-          message: "RefreshToken not found"
-        }
+          message: "RefreshToken not found",
+        };
       }
       await AuthModel.findOneAndDelete({
-        refreshToken: refreshToken
+        refreshToken: refreshToken,
       });
 
       res.json({
@@ -163,22 +156,20 @@ class AuthCtrl {
   refreshAccessToken = async (req, res, next) => {
     try {
       const token = req.cookies.refreshToken;
-      if(!token){
-        throw{
+      if (!token) {
+        throw {
           code: 401,
           name: "TOKEN_NOT_FOUND_REF",
-          message:"Token not found refresh"
-        }
+          message: "Token not found refresh",
+        };
       }
       const payload = jwt.verify(token, AppConfig.jwtSecret);
-      
-      const user = await UserModel.findById(payload.sub)
 
-
+      const user = await UserModel.findById(payload.sub);
 
       let tokenResponse = await AuthModel.findOne({
-        refreshToken: token
-      })
+        refreshToken: token,
+      });
       if (!tokenResponse) {
         throw {
           code: 401,
@@ -190,61 +181,62 @@ class AuthCtrl {
       const newAcessToken = jwt.sign(
         { sub: user._id, typ: "Bearer" },
         AppConfig.jwtSecret,
-        { expiresIn: "15m" }
+        { expiresIn: "15m" },
       );
 
-      await AuthModel.findOneAndUpdate({
-        refreshToken: token
-      }, {
-        $set: {
-          accessToken: newAcessToken
-        }
-      })
+      await AuthModel.findOneAndUpdate(
+        {
+          refreshToken: token,
+        },
+        {
+          $set: {
+            accessToken: newAcessToken,
+          },
+        },
+      );
 
       res.json({
         data: {
-          newAcessToken: newAcessToken
+          newAcessToken: newAcessToken,
         },
         message: "New Access Token Created",
         status: "ok",
-        options:null
-      })
+        options: null,
+      });
     } catch (error) {
       next(error);
     }
   };
 
-
-  getLoggedInUser = async(req, res, next) => {
+  getLoggedInUser = async (req, res, next) => {
     try {
-      let token = req.headers["authorization"] || null
-      if(!token) {
+      let token = req.headers["authorization"] || null;
+      if (!token) {
         throw {
           code: 403,
           name: "NO TOKEN FOUND",
-          message:"Token not found for loggedInuser"
-        }
+          message: "Token not found for loggedInuser",
+        };
       }
 
-    token = token.replace("Bearer", "").trim()
-    const payload = jwt.verify(token, AppConfig.jwtSecret);
+      token = token.replace("Bearer", "").trim();
+      const payload = jwt.verify(token, AppConfig.jwtSecret);
 
-    const user = await UserModel.findOneAndDelete({
-      _id: payload.sub
-    })
+      const user = await UserModel.findOneAndDelete({
+        _id: payload.sub,
+      });
 
-   const publicUser =  userSvc.publicLoggedInUser(user)
+      const publicUser = userSvc.publicLoggedInUser(user);
 
       res.json({
         data: publicUser,
         message: "Logged IN user Profile",
-        status: "ok"
-      })
-
+        status: "ok",
+      });
     } catch (error) {
-      next(error)
+      next(error);
     }
-  }
+  };
 }
 
 const authCtrl = new AuthCtrl();
