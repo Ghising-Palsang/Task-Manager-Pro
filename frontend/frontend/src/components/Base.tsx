@@ -150,13 +150,7 @@ const Base = () => {
         <div className="logo flex items-center border-b border-l border-gray-400 shadow-sm">
           <div className="flex border-2 items-center w-full justify-between p-3 sm:p-4 md:pr-8">
             <div className="flex items-center gap-2 sm:gap-3 md:gap-4 min-w-0">
-              <div className="w-10 sm:w-12 md:w-16 shrink-0">
-                <img
-                  src="../../src/assets/images/taskmanager.png"
-                  alt="task manager"
-                  className="w-full"
-                />
-              </div>
+
               <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-manrope truncate">
                 Task Manager Pro
               </h3>
