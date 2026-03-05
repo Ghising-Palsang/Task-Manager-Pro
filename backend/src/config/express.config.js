@@ -6,15 +6,23 @@ require("../config/mongodb.config");
 
 const app = express();
 
-app.use(
-  cors({
-    origin: [
-      "http://localhost:5173",
-      "https://task-manager-g0y8l03nx-palsangs-projects.vercel.app",
-    ],
-    credentials: true,
-  }),
-);
+const corsOptions = {
+  origin: (origin, callback) => {
+    // allow local dev or any Vercel deployment
+    if (
+      !origin ||
+      origin.endsWith(".vercel.app") ||
+      origin === "http://localhost:5173"
+    ) {
+      callback(null, true); // Cors allowed
+    } else {
+      callback(new Error("CORS not allowed")); 
+    }
+  },
+  credentials: true, 
+};
+
+app.use(cors(corsOptions));
 
 // parse JSON body
 app.use(express.json());
