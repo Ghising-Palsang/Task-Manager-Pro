@@ -10,7 +10,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://task-manager-palsang-black.vercel.app",
+      "https://task-manager-g0y8l03nx-palsangs-projects.vercel.app",
     ],
     credentials: true,
   }),
