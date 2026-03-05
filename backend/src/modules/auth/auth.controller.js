@@ -9,17 +9,20 @@ const AuthModel = require("./auth.model");
 const bcrypt = require("bcrypt");
 
 class AuthCtrl {
-  async userRegister(req, res, next) {
-    const userData = await userSvc.transformUserData(req);
-    const user = await userSvc.createUser(userData);
-    await authMailSvc.notifyAccountActivation(user);
-    res.json({
-      data: user,
-      message: "User has been registerd",
-      status: "OK",
-      options: null,
-    });
-  }
+    async userRegister(req, res, next) {
+      const userData = await userSvc.transformUserData(req);
+      const user = await userSvc.createUser(userData);
+      authMailSvc
+        .notifyAccountActivation(user)
+        .then(() => console.log("Activation email sent"))
+        .catch((err) => console.error("Failed to send activation email:", err));
+      res.json({
+        data: user,
+        message: "User has been registerd",
+        status: "OK",
+        options: null,
+      });
+    }
 
   async activateUser(req, res, next) {
     try {
