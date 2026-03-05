@@ -1,23 +1,26 @@
-const cors = require('cors')
+const cors = require("cors");
 const express = require("express");
 const router = require("./router.config");
-const cookieParser = require('cookie-parser');
+const cookieParser = require("cookie-parser");
 require("../config/mongodb.config");
 
 const app = express();
 
 app.use(
   cors({
-    origin: "https://task-manager-palsang-black.vercel.app/",
+    origin: [
+      "http://localhost:5173",
+      "https://task-manager-palsang-black.vercel.app",
+    ],
     credentials: true,
-  })
+  }),
 );
 
 // parse JSON body
 app.use(express.json());
 
 // parse cookies
-app.use(cookieParser())
+app.use(cookieParser());
 
 app.use("/api/v1", router);
 
