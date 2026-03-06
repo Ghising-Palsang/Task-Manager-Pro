@@ -100,29 +100,35 @@ const Taskbar = ({
                   </div>
                 ) : (
                   <>
-                    <div className="flex sm:gap-4 items-center  sm:w-full md:py-5">
+                    <div className="flex items-center justify-between w-full px-2 py-2 md:py-5">
+                      {/* Left: Checkbox */}
                       <input
                         type="checkbox"
                         className="h-5 w-5 md:h-6 md:w-6 accent-gray-300 shrink-0"
                         checked={task.status === "completed"}
                         onChange={() => onCompleted(task._id)}
                       />
+
+                      {/* Center: Title */}
                       <p
-                        className={`text-sm sm:text-base md:text-xl wrap-break-words ${task.status === "completed" ? `line-through` : ""}`}
+                        className={`flex-1 text-center text-sm sm:text-base md:text-xl wrap-break-word ${
+                          task.status === "completed" ? "line-through" : ""
+                        }`}
                       >
                         {task.title}
-                        
                       </p>
-                    </div>
-                    <div className="flex gap-3 sm:gap-4 md:gap-5 ml-8 sm:ml-0">
-                      <FaPencilAlt
-                        className="text-base sm:text-lg md:text-xl cursor-pointer"
-                        onClick={() => onEditClick(task._id, editInput)}
-                      />
-                      <FaRegTrashCan
-                        className="text-base sm:text-lg md:text-xl cursor-pointer"
-                        onClick={() => deleteTask(task._id)}
-                      />
+
+                      {/* Right: Edit and Delete Icons */}
+                      <div className="flex gap-3 sm:gap-4 md:gap-5">
+                        <FaPencilAlt
+                          className="text-base sm:text-lg md:text-xl cursor-pointer"
+                          onClick={() => onEditClick(task._id, editInput)}
+                        />
+                        <FaRegTrashCan
+                          className="text-base sm:text-lg md:text-xl cursor-pointer"
+                          onClick={() => deleteTask(task._id)}
+                        />
+                      </div>
                     </div>
                   </>
                 )}
