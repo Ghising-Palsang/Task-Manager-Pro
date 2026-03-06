@@ -20,4 +20,8 @@ const AppConfig = {
     jwtSecret: process.env.JWT_SECRET
 }
 
-module.exports = {MongoDbConfig, SmtpConfig, AppConfig}
+const ResendConfig = {
+  apiKey: process.env.RESEND_API_KEY
+};
+
+module.exports = {MongoDbConfig, SmtpConfig, AppConfig, ResendConfig}

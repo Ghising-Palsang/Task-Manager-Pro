@@ -1,6 +1,8 @@
 const { Resend } = require("resend");
+const { ResendConfig } = require("../config/config");
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+
+const resend = new Resend(ResendConfig.apiKey);
 
 class EmailService {
   async sendEmail({ to, subject, html }) {
