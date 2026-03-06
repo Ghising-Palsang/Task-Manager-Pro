@@ -1,7 +1,7 @@
 const { AppConfig } = require("../../config/config");
-const EmailService = require("../../services/email.service");
+const emailSvc = require('../../services/email.service')
 
-class AuthMail extends EmailService {
+class AuthMail {
   async notifyAccountActivation(user) {
     try {
       const activationLink = `${AppConfig.feUrl}activate?token=${user.activationToken}`;
@@ -43,10 +43,10 @@ class AuthMail extends EmailService {
         </div>
       </div>
                 `
-      await this.sendEmail({
+      await emailSvc.sendEmail({
         to: user.email,
-        sub: "Activate Your Account",
-        message
+        subject: "Activate Your Account",
+        html:message
       });
     } catch (error) {
       throw error;

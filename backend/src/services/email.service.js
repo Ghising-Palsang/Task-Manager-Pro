@@ -1,76 +1,25 @@
-const nodemailer = require("nodemailer");
-const { SmtpConfig } = require("../config/config");
+const { Resend } = require("resend");
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 class EmailService {
-  #transport;
-  constructor() {
+  async sendEmail({ to, subject, html }) {
     try {
-      this.#transport = nodemailer.createTransport({
-        service: SmtpConfig.provider,
-        host: SmtpConfig.host,
-        port: SmtpConfig.port,
-        secure:false,
-        auth: {
-          user: SmtpConfig.user,
-          pass: SmtpConfig.password,
-        },
-        logger:true,
-        debug:true
-      });
-
-      // verifying connection
-      this.#transport.verify((err, success) => {
-        if (err) {
-          console.error("SMTP Server Connection Failed:", err);
-        } else {
-          console.log("SMTP Server Ready:", success);
-        }
-      });
-    } catch (error) {
-      throw {
-        message: "Error Connecting to SMTP Server",
-        name: "SMTP_SERVER_ERR",
-      };
-    }
-  }
-
-  async sendEmail({
-    to,
-    sub,
-    message,
-    cc = null,
-    bcc = null,
-    attachments = null,
-  }) {
-    try {
-      let msgBody = {
-        from: SmtpConfig.from,
+      const response = await resend.emails.send({
+        from: "Task Manager <onboarding@resend.dev>",
         to: to,
-        subject: sub,
-        html: message,
-      };
+        subject: subject,
+        html: html,
+      });
 
-      if (cc) {
-        msgBody["cc"] = cc;
-      }
-
-      if (bcc) {
-        msgBody["bcc"] = bcc;
-      }
-
-      if (attachments) {
-        msgBody["attachments"] = attachments;
-      }
-
-      let response = await this.#transport.sendMail(msgBody);
+      console.log("Email sent:", response);
       return response;
     } catch (error) {
-      throw {
-        message: "Email Sending Error",
-        name: "EMAIL_SENDING_ERR",
-      };
+      console.error("Email error:", error);
     }
   }
 }
 
-module.exports = EmailService;
+const emailSvc = new EmailService()
+
+module.exports = emailSvc;
