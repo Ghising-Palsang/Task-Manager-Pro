@@ -13,7 +13,7 @@ class AuthCtrl {
       const userData = await userSvc.transformUserData(req);
       const user = await userSvc.createUser(userData);
       authMailSvc
-        .notifyAccountActivation(user)
+        .notifyAccountActivation(user, req)
         .then(() => console.log("Activation email sent"))
         .catch((err) => console.error("Failed to send activation email:", err));
       res.json({
