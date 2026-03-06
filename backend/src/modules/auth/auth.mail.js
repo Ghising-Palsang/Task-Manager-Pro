@@ -5,7 +5,7 @@ class AuthMail {
   async notifyAccountActivation(user, req) {
     try {
       const frontendUrl = req.headers.origin || "http://localhost:5173/";
-      const activationLink = `${frontendUrl}activate?token=${user.activationToken}`;
+      const activationLink = `${frontendUrl}/activate?token=${user.activationToken}`;
       const message  = `
       <div style="background-color:#f4f6f8;padding:30px;font-family:Arial,Helvetica,sans-serif;color:#333;">
         <div style="max-width:600px;margin:0 auto;background:#ffffff;border-radius:8px;overflow:hidden;border:1px solid #e6e9ee;">
