@@ -84,7 +84,7 @@ const Login = () => {
           <div className="w-full max-w-md border-2 rounded-lg sm:rounded-2xl shadow-lg sm:shadow-2xl flex flex-col items-center justify-start gap-8 sm:gap-10 p-6 sm:p-8 bg-white">
             <div className="flex flex-col items-center justify-center text-center">
               <img
-                src="../assets/images/taskmanager.png"
+                src="/images/taskmanager.png"
                 className="w-20 sm:w-28 lg:w-40"
                 alt="Task Manager"
               />
