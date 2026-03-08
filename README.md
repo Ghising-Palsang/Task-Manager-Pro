@@ -6,7 +6,7 @@ A full-stack MERN (MongoDB, Express, React, Node.js) application that allows use
 [Task Manager Live](https://task-manager-pro-eosin.vercel.app)
 
 ## Screenshots
-![Login](./screenshots/task.jpeg)  
+![Login](./screenshots/taskLogin.jpeg)  
 ![SignUp](./screenshots/taskSignup.jpeg)  
 ![ForgotPassword](./screenshots/taskReset.jpeg) 
 ![Dashboard](./screenshots/task.jpeg) 
