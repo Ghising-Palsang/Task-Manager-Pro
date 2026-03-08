@@ -1,2 +1,49 @@
-# Task-Manager-Pro
-A full-stack MERN Task Manager with JWT auth, task CRUD, filters, and server-side pagination. Built with React, Express, MongoDB, Tailwind, and deployed on Vercel + Render.
+# Task Manager App
+
+A full-stack MERN (MongoDB, Express, React, Node.js) application that allows users to manage tasks efficiently with secure JWT authentication. Users can create, update, and delete tasks, and the app features responsive design, dark/light mode, and a clean UI.
+
+## Live Demo
+[Task Manager Live](https://task-manager-pro-eosin.vercel.app)
+
+## Screenshots
+![Login](./screenshots/task.jpeg)  
+![SignUp](./screenshots/taskSignup.jpeg)  
+![ForgotPassword](./screenshots/taskReset.jpeg) 
+![Dashboard](./screenshots/task.jpeg) 
+![Mobile View](./screenshots/taskMobile.jpeg)
+
+## Features
+- User authentication with JWT
+- Create, edit, update, and delete tasks
+- View tasks in a responsive dashboard
+- Task Status Dashboard
+- Secure API endpoints
+- Mobile-friendly UI
+
+## Tech Stack
+**Frontend:**  
+- React  
+- Tailwind CSS  
+- Axios  
+- Typescript
+
+**Backend:**  
+- Node.js  
+- Express.js  
+- MongoDB (Mongoose)  
+- JWT for authentication  
+- Cors  
+- Joi
+
+**Deployment:**  
+- Frontend: Vercel  
+- Backend: Render
+
+
+
+## Getting Started
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/Ghising-Palsang/Task-Manager-Pro.git
+cd task-manager-pro
