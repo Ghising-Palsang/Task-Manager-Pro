@@ -83,7 +83,7 @@ const UserRegister = () => {
           <div className="w-full max-w-md border-2 border-red-900 rounded-xl shadow-lg flex flex-col items-center gap-6 p-6 bg-white">
             <div className="flex flex-col items-center justify-center text-center">
               <img
-                src="../../src/assets/images/taskmanager.png"
+                src="/images/taskmanager.png"
                 className="w-20 h-auto"
                 alt="Task Manager"
               />
@@ -127,14 +127,24 @@ const UserRegister = () => {
                 <label className="text-sm font-medium text-gray-700">
                   Password
                 </label>
-                <PasswordInput name="password" control={control} error={errors.password?.message} rules={{required: "Password is required"}}/>
+                <PasswordInput
+                  name="password"
+                  control={control}
+                  error={errors.password?.message}
+                  rules={{ required: "Password is required" }}
+                />
               </div>
 
               <div className="flex flex-col gap-2 relative">
                 <label className="text-sm font-medium text-gray-700">
                   Confirm Password
                 </label>
-                <ConfirmPasswordInput name="confirmPassword" control={control} error={errors.confirmPassword?.message} rules={{required: "Confirm Password is required"}}/>
+                <ConfirmPasswordInput
+                  name="confirmPassword"
+                  control={control}
+                  error={errors.confirmPassword?.message}
+                  rules={{ required: "Confirm Password is required" }}
+                />
               </div>
 
               <div className="flex flex-col gap-2 relative">

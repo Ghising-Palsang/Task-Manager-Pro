@@ -25,10 +25,7 @@ const ForgotPassword = () => {
     <div className="min-h-screen p-4 sm:p-6 flex items-center justify-center">
       <div className="w-full max-w-md sm:max-w-sm md:max-w-md lg:w-1/3 border-2 rounded-2xl shadow-2xl flex flex-col items-center gap-8 py-8 sm:py-12 px-6 sm:px-8">
         <div className="flex flex-col items-center justify-center text-center">
-          <img
-            src="../../src/assets/images/taskmanager.png"
-            className="w-32 sm:w-40"
-          />
+          <img src="/images/taskmanager.png" className="w-32 sm:w-40" />
           <h1 className="text-xl sm:text-2xl mt-4">Welcome User</h1>
           <h3 className="text-base sm:text-xl mt-2">
             Sign in to your task manager account
