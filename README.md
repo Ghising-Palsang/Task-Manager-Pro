@@ -1,6 +1,6 @@
 # Task Manager App
 
-A full-stack MERN (MongoDB, Express, React, Node.js) application that allows users to manage tasks efficiently with secure JWT authentication. Users can create, update, and delete tasks, and the app features responsive design, dark/light mode, and a clean UI.
+A full-stack MERN (MongoDB, Express, React, Node.js) application that allows users to manage tasks efficiently with secure JWT authentication and Typescript. Users can create, edit, update, and delete tasks, and the app features responsive design, and a clean UI.
 
 ## Live Demo
 [Task Manager Live](https://task-manager-pro-eosin.vercel.app)
