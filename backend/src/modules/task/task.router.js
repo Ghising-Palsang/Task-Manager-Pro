@@ -6,34 +6,34 @@ const taskDTO = require("./task.validator");
 
 const taskRouter = require("express").Router();
 
-taskRouter.use(
+taskRouter.post(
   "/addTask",
   bodyValidator(taskDTO),
   logInCheck,
   roleCheck("user", "admin"),
   taskCtrl.addTask
 );
-taskRouter.use(
+taskRouter.get(
   "/getTasks",
   logInCheck,
   roleCheck("user", "admin"),
   taskCtrl.getAllTasks
 );
   
-taskRouter.use(
+taskRouter.put(
   "/editTask/:id",
   logInCheck,
   roleCheck("user", "admin"),
   taskCtrl.editTask
 );
-taskRouter.use(
+taskRouter.delete(
   "/deleteTask/:id",
   logInCheck,
   roleCheck("user", "admin"),
   taskCtrl.deleteTask
 );
 
-taskRouter.use(
+taskRouter.get(
   "/getEveryTasks",
   logInCheck,
   roleCheck("admin"),

@@ -6,12 +6,12 @@ const { RegisterUserDTO } = require('./auth.validator');
 
 const authRouter = require('express').Router();
 
-authRouter.use('/userRegister',bodyValidator(RegisterUserDTO), authCtrl.userRegister)
-authRouter.use('/activateUser/:token', authCtrl.activateUser)
-authRouter.use('/logInUser', authCtrl.logInUser)
-authRouter.use('/getAllUsers', logInCheck, userCtrl.getAllUser)
-authRouter.use('/refreshToken', authCtrl.refreshAccessToken)
-authRouter.use('/logOutUser', authCtrl.logout)
-authRouter.use('/me', logInCheck, authCtrl.getLoggedInUser)
+authRouter.post('/userRegister',bodyValidator(RegisterUserDTO), authCtrl.userRegister)
+authRouter.get('/activateUser/:token', authCtrl.activateUser)
+authRouter.post('/logInUser', authCtrl.logInUser)
+authRouter.get('/getAllUsers', logInCheck, userCtrl.getAllUser)
+authRouter.post('/refreshToken', authCtrl.refreshAccessToken)
+authRouter.post('/logOutUser', authCtrl.logout)
+authRouter.get('/me', logInCheck, authCtrl.getLoggedInUser)
 
 module.exports = authRouter;
