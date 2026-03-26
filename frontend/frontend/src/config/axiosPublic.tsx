@@ -7,7 +7,7 @@ export const axiosPublic = axios.create({
     timeoutErrorMessage: "Server Timeout....",
     responseType: "json",
     headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "multipart/form-data"
     },
     withCredentials: true
 })

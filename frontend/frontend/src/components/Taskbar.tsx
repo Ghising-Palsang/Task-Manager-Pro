@@ -9,13 +9,18 @@ interface ITaskProps {
   deleteTask: (taskId: string) => void;
   onCompleted: (id: string) => void;
   editingTaskId: string;
-  onEditClick: (taskId: string, title: string) => void;
+  onEditClick: (task: ITasks) => void;
   onEditCancel: () => void;
   editInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onEditSubmit: (taskId: string) => void;
   editInput: string;
   setFilter: React.Dispatch<React.SetStateAction<string>>;
   filteredTasks: ITasks[];
+  editDescription: string;
+  editDescriptionChange: (
+    event: React.ChangeEvent<HTMLTextAreaElement>,
+  ) => void;
+  editFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const Taskbar = ({
@@ -29,12 +34,19 @@ const Taskbar = ({
   editInput,
   setFilter,
   filteredTasks,
+  editDescription,
+  editDescriptionChange,
+  editFileChange,
 }: ITaskProps) => {
-  const [selected, setSelected] = useState<"all" | "active" | "completed">("all");
+  const [selected, setSelected] = useState<"all" | "active" | "completed">(
+    "all",
+  );
+
+  const [deleteId, setDeleteId] = useState<string | null>();
 
   const activeClick = () => {
     setFilter("active");
-    
+
     setSelected("active");
   };
 
@@ -47,6 +59,10 @@ const Taskbar = ({
     setFilter("all");
     setSelected("all");
   };
+
+  const handleDeleteMenu = (taskId : string) => {
+    setDeleteId(taskId)
+  }
 
   return (
     <div className="border-2 h-auto border-gray-300 shadow-md px-4 py-4 sm:px-6 md:px-8 md:py-6 rounded-2xl">
@@ -81,26 +97,40 @@ const Taskbar = ({
                 className="flex flex-col sm:flex-row items-start sm:items-center text-gray-600 justify-between border px-3 py-3 sm:px-5 md:px-7 md:py-2 rounded-xl border-gray-400 shadow-md gap-3 sm:gap-4 w-full"
               >
                 {editingTaskId === task._id ? (
-                  <div className="flex sm:gap-4 items-center  sm:w-full gap-3 md:gap-5 ml-8 sm:ml-0">
+                  <div className="flex  items-center justify-between w-full gap-5">
                     <input
                       type="text"
-                      placeholder="Update task"
-                      className="h-5 py-8  w-full px-2 text-xl"
+                      className="h-5 py-8  w-2/5 px-2 text-xl bg-gray-100 rounded-2xl"
                       onChange={editInputChange}
                       value={editInput}
                     />
-                    <IoMdCheckmark
-                      className="text-base sm:text-lg md:text-2xl cursor-pointer"
-                      onClick={() => onEditSubmit(task._id)}
+
+                    <textarea
+                      placeholder="Task description"
+                      className="bg-[#f3f3f5] p-3 rounded-2xl w-3/4"
+                      value={editDescription}
+                      onChange={editDescriptionChange}
                     />
-                    <FaXmark
-                      className="text-base sm:text-lg md:text-2xl cursor-pointer"
-                      onClick={onEditCancel}
+
+                    <input
+                      type="file"
+                      className="w-1/5 bg-gray-300 p-2 rounded-2xl"
+                      onChange={editFileChange}
                     />
+                    <div className="w-1/12 flex gap-2 items-center justify-center">
+                      <IoMdCheckmark
+                        className="text-base sm:text-lg md:text-2xl cursor-pointer"
+                        onClick={() => onEditSubmit(task._id)}
+                      />
+                      <FaXmark
+                        className="text-base sm:text-lg md:text-2xl cursor-pointer"
+                        onClick={onEditCancel}
+                      />
+                    </div>
                   </div>
                 ) : (
                   <>
-                    <div className="flex items-center justify-between w-full px-2 py-2 md:py-5">
+                    <div className="flex gap-2 justify-between w-full px-2 py-2 md:py-5">
                       {/* Left: Checkbox */}
                       <input
                         type="checkbox"
@@ -110,24 +140,58 @@ const Taskbar = ({
                       />
 
                       {/* Center: Title */}
-                      <p
-                        className={`flex-1 text-center text-sm sm:text-base md:text-xl wrap-break-word ${
+                      <div
+                        className={`flex flex-col gap-2  w-4/5 bg-gray-100 rounded-2xl p-2 items-center justify-between text-sm sm:text-base md:text-xl wrap-break-word ${
                           task.status === "completed" ? "line-through" : ""
                         }`}
                       >
-                        {task.title}
-                      </p>
+                        <p className="text-2xl font-semibold max-w-full">
+                          {task.title}
+                        </p>
+                        <p className="w-full">{task.description || null}</p>
+                        <span className="max-w-full">
+                          {task.file && task.file.thumbUrl && (
+                            <img src={task.file.thumbUrl} />
+                          )}
+                        </span>
+                      </div>
 
                       {/* Right: Edit and Delete Icons */}
-                      <div className="flex gap-3 sm:gap-4 md:gap-5">
+                      <div className="flex gap-3 sm:gap-4 md:gap-5 relative">
                         <FaPencilAlt
                           className="text-base sm:text-lg md:text-xl cursor-pointer"
-                          onClick={() => onEditClick(task._id, editInput)}
+                          onClick={() => onEditClick(task)}
                         />
                         <FaRegTrashCan
                           className="text-base sm:text-lg md:text-xl cursor-pointer"
-                          onClick={() => deleteTask(task._id)}
+                          // onClick={() => deleteTask(task._id)}
+                          onClick={() => handleDeleteMenu(task._id)}
                         />
+
+                        {deleteId === task._id && (
+                          <div className="absolute top-8 right-0 bg-white border shadow-lg rounded-xl p-3 flex flex-col gap-2 z-10">
+                            <p className="text-sm">Delete task?</p>
+
+                            <div className="flex gap-2">
+                              <button
+                                className="px-3 py-1 bg-green-200 rounded"
+                                onClick={() => setDeleteId(null)}
+                              >
+                                No
+                              </button>
+
+                              <button
+                                className="px-3 py-1 bg-red-500 text-white rounded"
+                                onClick={() => {
+                                  deleteTask(task._id);
+                                  setDeleteId(null);
+                                }}
+                              >
+                                Yes
+                              </button>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </>

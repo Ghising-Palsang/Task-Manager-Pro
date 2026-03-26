@@ -34,7 +34,7 @@ const axiosConfig = axios.create({
   responseType: "json",
   withCredentials: true,
   headers: {
-    "Content-Type": "application/json",
+    "Content-Type": "multipart/form-data",
   },
 });
 

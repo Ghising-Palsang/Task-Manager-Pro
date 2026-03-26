@@ -9,7 +9,7 @@ const TaskSchema = new mongoose.Schema(
     },
     description: {
       type: String,
-      default: "",
+      
     },
     status: {
       type: String,
@@ -21,6 +21,11 @@ const TaskSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    file: {
+      publicId: String,
+      publicUrl: String,
+      thumbUrl: String
+    }
   },
   {
     autoCreate: true,
