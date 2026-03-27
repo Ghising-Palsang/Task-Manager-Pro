@@ -26,7 +26,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "https://task-manager-pro-eosin.vercel.app/",
+    origin: "https://task-manager-pro-eosin.vercel.app",
     credentials: true,
   }),
 );
