@@ -1,14 +1,13 @@
 const http = require("http");
 const app = require("./src/config/express.config");
-const { Server } = require("socket.io");
 const { initSocket } = require("./src/config/socket");
 
 const port = process.env.PORT || 9003;
-const host = "localhost";
+const host = "0.0.0.0";
 
 const httpServer = http.createServer(app);
 
-const io = initSocket(httpServer);
+initSocket(httpServer);
 
 httpServer.listen(port, host, (err) => {
   if (!err) {
